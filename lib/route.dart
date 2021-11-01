@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shopping_app/screens/profile2.dart';
 
 import 'registration/singup.dart';
 import 'screens/profile.dart';
@@ -24,7 +25,7 @@ class _RoutePageState extends State<RoutePage> {
         } else if(snapshot.hasError) {
           return Center(child: Text('Something Went Wrong!'));
         } else {
-          return Signup();
+          return Profile2();
         }
       },
     );

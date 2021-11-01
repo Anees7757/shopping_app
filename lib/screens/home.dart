@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shopping_app/screens/search.dart';
 import 'package:shopping_app/tabs/Cars.dart';
 import 'package:shopping_app/tabs/all.dart';
 import 'package:shopping_app/tabs/clothes.dart';
@@ -18,6 +21,44 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextEditingController _addressController = TextEditingController();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  dialogbox() {
+    final String address = _addressController.text;
+    final userId = auth.currentUser!.uid;
+
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Enter Address'),
+            content: TextField(
+              controller: _addressController,
+              decoration: InputDecoration(hintText: "Address here"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: primaryColor,
+                textColor: Colors.white,
+                child: Text('OK'),
+                onPressed: () {
+                  setState(() async {
+                    await db
+                        .collection("users")
+                        .doc(userId)
+                        .update({"address": address});
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -35,26 +76,33 @@ class _HomeState extends State<Home> {
             height: 35,
             margin: EdgeInsets.only(right: 20),
             child: TextField(
-              textAlignVertical: TextAlignVertical.bottom,
-              autofocus: false,
-              cursorColor: Theme.of(context).primaryColor,
-              style: const TextStyle(fontSize: 14.0, color: Color(0xFFbdc6cf)),
-              decoration: InputDecoration(
-                prefixIcon: const Icon(CupertinoIcons.search),
-                filled: true,
-                fillColor: Colors.grey[200],
-                hintText: 'Search',
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.circular(50),
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Search()),
+                  );
+                },
+                textAlignVertical: TextAlignVertical.bottom,
+                autofocus: false,
+                cursorColor: Theme.of(context).primaryColor,
+                style:
+                    const TextStyle(fontSize: 14.0, color: Color(0xFFbdc6cf)),
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(CupertinoIcons.search),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  hintText: 'Search',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                 ),
               ),
             ),
-          ),
           leading: Builder(builder: (context) {
             return IconButton(
               icon: const Icon(Icons.segment),
@@ -82,7 +130,9 @@ class _HomeState extends State<Home> {
                 title: Row(
                   children: const [
                     Icon(Icons.local_mall),
-                    SizedBox(width: 3,),
+                    SizedBox(
+                      width: 3,
+                    ),
                     Text("Shopping App",
                         style: TextStyle(
                             color: primaryColor,
@@ -102,6 +152,9 @@ class _HomeState extends State<Home> {
               ListTile(
                 title: Text("Edit Address"),
                 leading: Icon(Icons.edit),
+                onTap: () {
+                  dialogbox();
+                },
               ),
               ListTile(
                 title: Text("About"),

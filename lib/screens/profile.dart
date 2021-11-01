@@ -77,47 +77,47 @@ class _ProfileState extends State<Profile> {
                     ),
                     Center(
                       child: Text("${data['name']}",
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w800)),
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.w800)),
                     ),
                     Center(
                       child: Text("${data['phone']}",
-                          style: TextStyle(
-                              fontSize: 17)),
+                              style: TextStyle(fontSize: 17)),
                     ),
                     SizedBox(
                       height: 70,
                     ),
                     ListTile(
-                      leading: Icon(Icons.edit),
-                      title: Text('Edit Profile'),
-                      onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EditPage()),
-                        );
-                      },
-                    ),
+                            leading: Icon(Icons.edit),
+                            title: Text('Edit Profile'),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditPage()),
+                              );
+                            },
+                          ),
                     Divider(),
                     ListTile(
-                      leading: Icon(Icons.map),
-                      title: Text("Address"),
-                      subtitle: Text('${data['address']}'),
-                    ),
+                            leading: Icon(Icons.map),
+                            title: Text("Address"),
+                            subtitle: Text('${data['address']}'),
+                          ),
                     Divider(),
                     ListTile(
-                      leading: Icon(Icons.credit_card),
-                      title: Text('Payment Detail'),
-                    ),
+                            leading: Icon(Icons.credit_card),
+                            title: Text('Payment Detail'),
+                          ),
                     Divider(),
                     ListTile(
-                      leading: Icon(Icons.logout, color: Colors.red),
-                      title:
-                          Text('Logout', style: TextStyle(color: Colors.red)),
-                      onTap: () {
-                        auth.signOut();
-                      },
-                    ),
+                            leading: Icon(Icons.logout, color: Colors.red),
+                            title: Text('Logout',
+                                style: TextStyle(color: Colors.red)),
+                            onTap: () {
+                              auth.signOut();
+                            },
+                          ),
                   ],
                 ),
               ),
